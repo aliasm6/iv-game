@@ -14,17 +14,25 @@ function preload() {
   for (let i = 1; i <= 6; i++) {
 
     game.load.image('rock' + i, 'images/projectiles/rock-' + i + '.png');
-    game.load.image('orb' + i, 'images/orbs/orb-' + i + '.png');
   }
+
+  for (let i = 1; i <= 4; i++) {
+
+    game.load.image('orb' + i, 'images/orb/orb-' + i + '.png');
+
+  }
+
 }
 
-
-var hex;
+// var hex;
 var crystals
 var cursors;
 var rocks;
 var orbs;
-var box;
+var orb1
+var orb2
+var orb3
+var orb4
 
 function create() {
 
@@ -33,23 +41,6 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
 
 
-  // Creates Player Controlled Orbs
-  hex = game.add.sprite(400, 300, 'hex');
-  // allows for orbs to have physical body
-  hex.enableBody = true;
-
-  // // box to position orbs on
-  // box = game.add.sprite(400, 300, 'box')
-  // box.enableBody = true;
-  // box.anchor.setTo(0.5, 0.5)
-  // game.physics.enable(box, Phaser.Physics.ARCADE);
-
-
-  // Anchors Orbs to Center
-  hex.anchor.setTo(0.5, 0.5);
-  game.physics.enable(hex, Phaser.Physics.ARCADE);
-  // hex.body.setSize(42,42,50,0)
-
   // creates rocks to be projected at player orb
   rocks = [];
   for (let i = 1; i < 7; i++)
@@ -57,19 +48,31 @@ function create() {
        var crystal = game.add.sprite(game.world.randomX, game.world.randomY, 'rock' + i);
        game.physics.enable(crystal, Phaser.Physics.ARCADE);
        crystal.anchor.setTo(0.5, 0.5);
+       crystal.body.setSize(35,35, 15, 15 )
+
+
        rocks.push(crystal)
    }
+   orbs = game.add.physicsGroup()
 
-  orbs = [];
+   game.physics.enable(crystal, Phaser.Physics.ARCADE);
 
-  for (let i = 1; i<7; i++)
-    {
-      var sphere = game.add.sprite(0,0, 'orb' + i);
-      game.physics.enable(sphere, Phaser.Physics.ARCADE);
-      sphere.anchor.setTo(0.5, 0.5);
-      orbs.push(sphere)
-    }
-  // orbs[1].alignIn(box, Phaser.BOTTOM);
+   orbs.create(-130, -30, 'orb1')
+   orbs.create(70, -30, 'orb2')
+   orbs.create(-30, 70, 'orb3')
+   orbs.create(-30, -130, 'orb4')
+   orbs.x = 400;
+   orbs.y = 300;
+
+   for (let i = 0; i < orbs.children.length; i ++) {
+     var orb = orbs.children[i];
+     orb.body.immovable = true
+     orb.body.setSize(38, 38, 19, 19)
+   }
+
+   console.log('!',orbs.children[0])
+
+
 
 
 
@@ -81,8 +84,8 @@ function create() {
 function update() {
 
 
-    hex.body.angularVelocity = 0;
 
+    //crystal physics
     rocks.forEach(function (rock) {
 
 
@@ -90,63 +93,93 @@ function update() {
 
       var rand = Math.floor(Math.random() * 100);
       var direction = (rand >= 5) ? -1 : 1;
-
+      var randSpeed = game.rnd.integerInRange(40, 200)
 
 
       if ( !rock.body.velocity.x && !rock.body.velocity.y ) {
         rock.body.velocity.x = rand * direction * 30;
         rock.body.velocity.y = rand * direction * 30;
         game.physics.arcade.moveToXY(
-          rock, 400, 300
+          rock, 400, 300, randSpeed
         );
       }
 
       if (rock.x < 0) {
           rock.x = game.width;
           game.physics.arcade.moveToXY(
-            rock, 400, 300
+            rock, 400, 300, randSpeed
           );
       } else if (rock.x > game.width) {
           rock.x = 0;
           game.physics.arcade.moveToXY(
-            rock, 400, 300
+            rock, 400, 300, randSpeed
           );
       }
 
       if (rock.y < 0) {
           rock.y = game.height;
           game.physics.arcade.moveToXY(
-            rock, 400, 300
+            rock, 400, 300, randSpeed
           );
       } else if (rock.y > game.height) {
           rock.y = 0;
           game.physics.arcade.moveToXY(
-            rock, 400, 300
+            rock, 400, 300, randSpeed
           );
       }
     })
 
 
-
-    if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+    // orb control
+    if (cursors.left.isDown)
     {
-        hex.body.angularVelocity = -50;
-        // box.rotation -= 100
-        // box.angle -= 20
-    }
-    else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-    {
-        hex.body.angularVelocity = 50;
-    }
-    else {
-      hex.body.angularVelocity = 0
-    }
+    orbs.rotation -= 0.06;
 
+    }
+    else if (cursors.right.isDown)
+    {
+      orbs.rotation += 0.06;
+
+
+    }
+    // else {
+    //     // hex.body.angularVelocity = 0
+    // }
+    for (let i = 0; i < orbs.children.length; i++) {
+
+      if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
+      {
+          // hex.body.angularVelocity = -50;
+          // box.rotation -= 100
+          // box.angle -= 20
+
+
+
+      }
+      else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
+      {
+          // hex.body.angularVelocity = 50;
+      }
+      else {
+          orbs.children[i].body.angularVelocity = 0
+      }
+    }
+    if (game.physics.arcade.collide(rocks, orbs)){
+      console.log('boop')
+    }
 
 
 }
 
 function render() {
+  rocks.forEach(function(rock){
+    game.debug.body(rock);
+  })
+  orbs.children.forEach(function(orb){
+    game.debug.body(orb);
+
+  })
+  game.debug.spriteInfo(orbs.children[0], 32, 32)
   // game.debug.body(hex)
   // game.debug.body(rocks[0])
   // game.debug.body(orbs[0])
