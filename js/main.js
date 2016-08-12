@@ -108,7 +108,7 @@ function update() {
         rock.body.velocity.x = rand * direction * 30;
         rock.body.velocity.y = rand * direction * 30;
         game.physics.arcade.moveToXY(
-          rock, 400, 300, randSpeed
+          rock, 300, 300, randSpeed
         );
       }
 
@@ -123,24 +123,24 @@ function update() {
       if (rock.x < 0) {
           rock.x = game.width;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 300, 300, randSpeed
           );
       } else if (rock.x > game.width) {
           rock.x = 0;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 300, 300, randSpeed
           );
       }
 
       if (rock.y < 0) {
           rock.y = game.height;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 300, 300, randSpeed
           );
       } else if (rock.y > game.height) {
           rock.y = 0;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 300, 300, randSpeed
           );
       }
     })
