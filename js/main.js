@@ -34,6 +34,7 @@ var orb2
 var orb3
 var orb4
 
+
 function create() {
 
 
@@ -46,12 +47,14 @@ function create() {
   for (let i = 1; i < 7; i++)
    {
 
-       var crystal = game.add.sprite(game.world.randomX + 400, game.world.randomY + 400, 'rock' + i);
+       var crystal = game.add.sprite(game.world.randomX, game.world.randomY, 'rock' + i);
        game.physics.enable(crystal, Phaser.Physics.ARCADE);
        crystal.anchor.setTo(0.5, 0.5);
        crystal.body.setSize(30,30, 20, 20 )
 
-
+      console.log(crystal.centerX)
+      console.log(crystal.centerY);
+      console.log('')
        rocks.push(crystal)
    }
 
@@ -99,7 +102,7 @@ function update() {
 
       rock.body.angularVelocity = 100;
 
-      var rand = Math.floor(Math.random() * 100);
+      var rand = Math.floor(Math.random() * 10);
       var direction = (rand >= 5) ? -1 : 1;
       var randSpeed = game.rnd.integerInRange(50, 150)
 
@@ -123,12 +126,12 @@ function update() {
       if (rock.x < 0) {
           rock.x = game.width;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 200, 300, randSpeed
           );
       } else if (rock.x > game.width) {
           rock.x = 0;
           game.physics.arcade.moveToXY(
-            rock, 400, 300, randSpeed
+            rock, 200, 300, randSpeed
           );
       }
 
@@ -213,7 +216,7 @@ function restart () {
   for (let i = 1; i < 7; i++)
    {
 
-       var crystal = game.add.sprite(game.world.randomX + 600, game.world.randomY + 600, 'rock' + i);
+       var crystal = game.add.sprite(game.world.randomX, game.world.randomY, 'rock' + i);
        game.physics.enable(crystal, Phaser.Physics.ARCADE);
        crystal.anchor.setTo(0.5, 0.5);
        crystal.body.setSize(30,30, 20, 20 )
