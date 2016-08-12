@@ -45,36 +45,44 @@ function create() {
   rocks = [];
   for (let i = 1; i < 7; i++)
    {
-       var crystal = game.add.sprite(game.world.randomX, game.world.randomY, 'rock' + i);
+
+       var crystal = game.add.sprite(game.world.randomX + 400, game.world.randomY + 400, 'rock' + i);
        game.physics.enable(crystal, Phaser.Physics.ARCADE);
        crystal.anchor.setTo(0.5, 0.5);
-       crystal.body.setSize(35,35, 15, 15 )
+       crystal.body.setSize(30,30, 20, 20 )
 
 
        rocks.push(crystal)
    }
+
    orbs = game.add.physicsGroup()
 
    game.physics.enable(crystal, Phaser.Physics.ARCADE);
 
-   orbs.create(-130, -30, 'orb1')
-   orbs.create(70, -30, 'orb2')
-   orbs.create(-30, 70, 'orb3')
-   orbs.create(-30, -130, 'orb4')
-   orbs.x = 400;
-   orbs.y = 300;
+   orbs.create(0, -130, 'orb1')
+   orbs.create(-130, 0, 'orb2')
+   orbs.create(0, 130, 'orb3')
+   orbs.create(130, 0, 'orb4')
+   orbs.x = 350
+   orbs.y = 250
+  //  orbs.children[0].pivot.x = 100
 
    for (let i = 0; i < orbs.children.length; i ++) {
      var orb = orbs.children[i];
      orb.body.immovable = true
      orb.body.setSize(38, 38, 19, 19)
+
    }
 
    console.log('!',orbs.children[0])
+   console.log(orbs.children[0].x)
 
 
 
-
+   //  Text
+    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '50px Helvetica', fill: '#fff' });
+    stateText.anchor.setTo(0.5, 0.5);
+    stateText.visible = false;
 
 
   // Allows for arrow keys to be used to control orbs
@@ -93,7 +101,7 @@ function update() {
 
       var rand = Math.floor(Math.random() * 100);
       var direction = (rand >= 5) ? -1 : 1;
-      var randSpeed = game.rnd.integerInRange(40, 200)
+      var randSpeed = game.rnd.integerInRange(50, 150)
 
 
       if ( !rock.body.velocity.x && !rock.body.velocity.y ) {
@@ -103,6 +111,14 @@ function update() {
           rock, 400, 300, randSpeed
         );
       }
+
+      // else if ( rock.body.x === orbs.body. || rock ) {
+      //   rock.body.velocity.x = rand * direction * 30;
+      //   rock.body.velocity.y = rand * direction * 30;
+      //   game.physics.arcade.moveToXY(
+      //     rock, 400, 300, randSpeed
+      //   );
+      // }
 
       if (rock.x < 0) {
           rock.x = game.width;
@@ -133,38 +149,23 @@ function update() {
     // orb control
     if (cursors.left.isDown)
     {
-    orbs.rotation -= 0.06;
+    orbs.rotation -= 0.05;
+    orbs.children.forEach(function(orb) {
+      orb.rotation += 0.05;
+    })
 
     }
     else if (cursors.right.isDown)
     {
-      orbs.rotation += 0.06;
+      orbs.rotation += 0.05;
+      orbs.children.forEach(function(orb) {
+        orb.rotation -= 0.05;
+      })
 
 
     }
-    // else {
-    //     // hex.body.angularVelocity = 0
-    // }
-    for (let i = 0; i < orbs.children.length; i++) {
 
-      if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT))
-      {
-          // hex.body.angularVelocity = -50;
-          // box.rotation -= 100
-          // box.angle -= 20
-
-
-
-      }
-      else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT))
-      {
-          // hex.body.angularVelocity = 50;
-      }
-      else {
-          orbs.children[i].body.angularVelocity = 0
-      }
-    }
-    if (game.physics.arcade.collide(rocks, orbs)){
+    if (game.physics.arcade.collide(rocks, orbs, gameOver, null, this)){
       console.log('boop')
     }
 
@@ -172,19 +173,60 @@ function update() {
 }
 
 function render() {
-  rocks.forEach(function(rock){
-    game.debug.body(rock);
-  })
-  orbs.children.forEach(function(orb){
-    game.debug.body(orb);
-
-  })
-  game.debug.spriteInfo(orbs.children[0], 32, 32)
-  // game.debug.body(hex)
-  // game.debug.body(rocks[0])
-  // game.debug.body(orbs[0])
+  // rocks.forEach(function(rock){
+  //   game.debug.body(rock);
+  // })
+  // orbs.children.forEach(function(orb){
+  //   game.debug.body(orb);
+  //
+  // })
 }
 
+function gameOver(){
+    orbs.children.forEach(function(child) {
+    child.kill()
+  })
+    rocks.forEach(function(crystal){
+      crystal.kill()
+    })
+
+    stateText.text=" Click to try again.";
+    stateText.visible = true;
+
+    //the "click to restart" handler
+    game.input.onTap.addOnce(restart,this);
+
+}
+
+function restart () {
+
+
+
+
+    //revives the player
+    orbs.children.forEach(function(child) {
+    child.revive()
+
+  })
+
+  rocks = [];
+  for (let i = 1; i < 7; i++)
+   {
+
+       var crystal = game.add.sprite(game.world.randomX + 600, game.world.randomY + 600, 'rock' + i);
+       game.physics.enable(crystal, Phaser.Physics.ARCADE);
+       crystal.anchor.setTo(0.5, 0.5);
+       crystal.body.setSize(30,30, 20, 20 )
+
+
+       rocks.push(crystal)
+   }
+    //hides the text
+    stateText.visible = false;
+
+
+
+}
 
 
 });
