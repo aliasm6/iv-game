@@ -61,10 +61,10 @@ function create() {
 
    game.physics.enable(crystal, Phaser.Physics.ARCADE);
 
-   orbs.create(0, -115, 'orb1')
-   orbs.create(-115, 0, 'orb2')
-   orbs.create(0, 115, 'orb3')
-   orbs.create(115, 0, 'orb4')
+   orbs.create(0, -140, 'orb1')
+   orbs.create(-140, 0, 'orb2')
+   orbs.create(0, 140, 'orb3')
+   orbs.create(140, 0, 'orb4')
    orbs.x = 350
    orbs.y = 250
   //  orbs.children[0].pivot.x = 100
