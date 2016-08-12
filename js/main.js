@@ -46,7 +46,7 @@ function create() {
   for (let i = 1; i < 7; i++)
    {
 
-       var crystal = game.add.sprite(game.world.randomX + 400, game.world.randomY + 400, 'rock' + i);
+       var crystal = game.add.sprite(game.world.randomX, game.world.randomY, 'rock' + i);
        game.physics.enable(crystal, Phaser.Physics.ARCADE);
        crystal.anchor.setTo(0.5, 0.5);
        crystal.body.setSize(30,30, 20, 20 )
