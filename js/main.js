@@ -61,10 +61,10 @@ function create() {
 
    game.physics.enable(crystal, Phaser.Physics.ARCADE);
 
-   orbs.create(0, -130, 'orb1')
-   orbs.create(-130, 0, 'orb2')
-   orbs.create(0, 130, 'orb3')
-   orbs.create(130, 0, 'orb4')
+   orbs.create(0, -115, 'orb1')
+   orbs.create(-115, 0, 'orb2')
+   orbs.create(0, 115, 'orb3')
+   orbs.create(115, 0, 'orb4')
    orbs.x = 350
    orbs.y = 250
   //  orbs.children[0].pivot.x = 100
@@ -72,7 +72,7 @@ function create() {
    for (let i = 0; i < orbs.children.length; i ++) {
      var orb = orbs.children[i];
      orb.body.immovable = true
-     orb.body.setSize(38, 38, 19, 19)
+     orb.body.setSize(30, 30, 25, 25)
 
    }
 
@@ -103,7 +103,7 @@ function update() {
 
       var rand = Math.floor(Math.random() * 10);
       var direction = (rand >= 5) ? -1 : 1;
-      var randSpeed = game.rnd.integerInRange(50, 150)
+      var randSpeed = game.rnd.integerInRange(50, 100)
 
 
       if ( !rock.body.velocity.x && !rock.body.velocity.y ) {
@@ -169,13 +169,13 @@ function update() {
 }
 
 function render() {
-  // rocks.forEach(function(rock){
-  //   game.debug.body(rock);
-  // })
-  // orbs.children.forEach(function(orb){
-  //   game.debug.body(orb);
-  //
-  // })
+  rocks.forEach(function(rock){
+    game.debug.body(rock);
+  })
+  orbs.children.forEach(function(orb){
+    game.debug.body(orb);
+
+  })
 }
 
 function gameOver(){
