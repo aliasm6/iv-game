@@ -1,7 +1,7 @@
-// preloading player controlled hex
+function hex() {
 game.load.image('hex', 'images/hexagon1.png');
 game.load.image('box','images/background/black.png')
-// preloading projectiles
+};
 
 for (let i = 1; i <= 6; i++) {
 
