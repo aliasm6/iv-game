@@ -1,16 +1,17 @@
 
-$(document).on('ready', function() {
+// $(document).on('ready', function() {
   console.log('sanity check!');
+
   // defines canvas width and height as well as functions to be used for game
   var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
 
 
 function preload() {
   // preloading player controlled hex
-  game.load.image('hex', 'images/hexagon1.png');
-  game.load.image('box','images/background/black.png')
+  hex()
+  // game.load.image('hex', 'images/hexagon1.png');
+  // game.load.image('box','images/background/black.png')
   // preloading projectiles
-
   for (let i = 1; i <= 6; i++) {
 
     game.load.image('rock' + i, 'images/projectiles/rock-' + i + '.png');
@@ -228,4 +229,4 @@ function restart () {
 }
 
 
-});
+// });
