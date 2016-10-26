@@ -109,15 +109,15 @@ function update() {
     }
 }
 
-function render() {
-  rocks.forEach(function(rock){
-    game.debug.body(rock);
-  })
-  orbs.children.forEach(function(orb){
-    game.debug.body(orb);
-
-  })
-}
+// function render() {
+//   rocks.forEach(function(rock){
+//     game.debug.body(rock);
+//   })
+//   orbs.children.forEach(function(orb){
+//     game.debug.body(orb);
+//
+//   })
+// }
 
 function gameOver(){
     orbs.children.forEach(function(child) {
