@@ -1,6 +1,4 @@
-
-// $(document).on('ready', function() {
-  console.log('sanity check!');
+console.log('sanity check!');
 
   // defines canvas width and height as well as functions to be used for game
   var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
@@ -9,8 +7,6 @@
     update: update,
     render:render
   });
-
-
 function preload() {
   //preloads background
   loadBackground()
@@ -19,7 +15,6 @@ function preload() {
   loadSprites('orb', 'images/orb/orb-', '.png', 4)
 }
 
-// var hex;
 var crystals
 var cursors;
 var rocks;
@@ -30,62 +25,31 @@ var orb3
 var orb4
 
 function create() {
+  //  Text
+  stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '25px Helvetica', fill: '#fff' });
+  stateText.anchor.setTo(0.5, 0.5);
+  stateText.visible = false;
 
+  const arrayX = [0, -115, 0, 115]
+  const arrayY = [-115, 0, 115, 0]
   //Allows physics to exist
   initializePhysics()
-  //createsRocks and enables physics to be imposed on them
-  createRocks()
-
-
-
-   orbs = game.add.physicsGroup()
-
-  //  game.physics.enable(crystal, Phaser.Physics.ARCADE);
-
-   orbs.create(0, -115, 'orb1')
-   orbs.create(-115, 0, 'orb2')
-   orbs.create(0, 115, 'orb3')
-   orbs.create(115, 0, 'orb4')
-   orbs.x = 350
-   orbs.y = 250
-  //  orbs.children[0].pivot.x = 100
-
-   for (let i = 0; i < orbs.children.length; i ++) {
-     var orb = orbs.children[i];
-     orb.body.immovable = true
-     orb.body.setSize(30, 30, 25, 25)
-
-   }
-
-   console.log('!',orbs.children[0])
-   console.log(orbs.children[0].x)
-
-
-
-   //  Text
-    stateText = game.add.text(game.world.centerX,game.world.centerY,' ', { font: '25px Helvetica', fill: '#fff' });
-    stateText.anchor.setTo(0.5, 0.5);
-    stateText.visible = false;
-
-
+  //creates rocks and enables physics to be imposed on them
+  generateRocks()
+  //creates orbs and adds them to physics group
+  generateOrbs(arrayX, arrayY, 'orb')
+  orbBody()
   // Allows for arrow keys to be used to control orbs
   cursors = game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-
-
-
     //crystal physics
     rocks.forEach(function (rock) {
-
-
       rock.body.angularVelocity = 100;
-
       var rand = Math.floor(Math.random() * 10);
       var direction = (rand >= 5) ? -1 : 1;
       var randSpeed = game.rnd.integerInRange(50, 100)
-
 
       if ( !rock.body.velocity.x && !rock.body.velocity.y ) {
         rock.body.velocity.x = rand * direction * 30;
@@ -94,9 +58,6 @@ function update() {
           rock, 350, 300, randSpeed
         );
       }
-
-
-
       if (rock.x < 0) {
           rock.x = game.width;
           game.physics.arcade.moveToXY(
@@ -122,7 +83,6 @@ function update() {
       }
     })
 
-
     // orb control
     if (cursors.left.isDown)
     {
@@ -145,8 +105,6 @@ function update() {
     if (game.physics.arcade.collide(rocks, orbs, gameOver, null, this)){
       console.log('boop')
     }
-
-
 }
 
 function render() {
@@ -177,9 +135,6 @@ function gameOver(){
 
 function restart () {
 
-
-
-
     //revives the player
     orbs.children.forEach(function(child) {
     child.revive()
@@ -189,24 +144,15 @@ function restart () {
   rocks = [];
   for (let i = 1; i < 7; i++)
    {
-      var rand = Math.floor(Math.random() * 10);
-      var posOrNeg = (rand >= 5) ? -1 : 1;
+    var rand = Math.floor(Math.random() * 10);
+    var posOrNeg = (rand >= 5) ? -1 : 1;
 
-
-       var crystal = game.add.sprite(game.world.randomX + 500 * posOrNeg, game.world.randomY + 500 * posOrNeg, 'rock' + i);
-       game.physics.enable(crystal, Phaser.Physics.ARCADE);
-       crystal.anchor.setTo(0.5, 0.5);
-       crystal.body.setSize(30,30, 20, 20 )
-
-
-       rocks.push(crystal)
+    var crystal = game.add.sprite(game.world.randomX + 500 * posOrNeg, game.world.randomY + 500 * posOrNeg, 'rock' + i);
+    game.physics.enable(crystal, Phaser.Physics.ARCADE);
+    crystal.anchor.setTo(0.5, 0.5);
+    crystal.body.setSize(30,30, 20, 20 )
+    rocks.push(crystal)
    }
     //hides the text
     stateText.visible = false;
-
-
-
 }
-
-
-// });
