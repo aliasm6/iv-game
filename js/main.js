@@ -5,7 +5,6 @@ console.log('sanity check!');
     preload: preload,
     create: create,
     update: update,
-    render:render
   });
 function preload() {
   //preloads background
