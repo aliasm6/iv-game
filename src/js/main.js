@@ -3,25 +3,20 @@
   console.log('sanity check!');
 
   // defines canvas width and height as well as functions to be used for game
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
+  var game = new Phaser.Game(800, 600, Phaser.AUTO, '', {
+    preload: preload,
+    create: create,
+    update: update,
+    render:render
+  });
 
 
 function preload() {
-  // preloading player controlled hex
-  hex()
-  // game.load.image('hex', 'images/hexagon1.png');
-  // game.load.image('box','images/background/black.png')
-  for (let i = 1; i <= 6; i++) {
-
-    game.load.image('rock' + i, 'images/projectiles/rock-' + i + '.png');
-  }
-
-  for (let i = 1; i <= 4; i++) {
-
-    game.load.image('orb' + i, 'images/orb/orb-' + i + '.png');
-
-  }
-
+  //preloads background
+  loadBackground()
+  //preloads images for orb and rock sprites
+  loadSprites('rock', 'images/projectiles/rock-', '.png', 6)
+  loadSprites('orb', 'images/orb/orb-', '.png', 4)
 }
 
 // var hex;
@@ -36,30 +31,16 @@ var orb4
 
 function create() {
 
-
   //Allows physics to exist
-  game.physics.startSystem(Phaser.Physics.ARCADE);
+  initializePhysics()
+  //createsRocks and enables physics to be imposed on them
+  createRocks()
 
 
-  // creates rocks to be projected at player orb
-  rocks = [];
-  for (let i = 1; i < 7; i++)
-   {
-     var rand = Math.floor(Math.random() * 10);
-     var posOrNeg = (rand >= 5) ? -1 : 1;
-
-       var crystal = game.add.sprite(game.world.randomX + 500 * posOrNeg, game.world.randomY + 500 * posOrNeg, 'rock' + i);
-       game.physics.enable(crystal, Phaser.Physics.ARCADE);
-       crystal.anchor.setTo(0.5, 0.5);
-       crystal.body.setSize(30,30, 20, 20 )
-
-
-       rocks.push(crystal)
-   }
 
    orbs = game.add.physicsGroup()
 
-   game.physics.enable(crystal, Phaser.Physics.ARCADE);
+  //  game.physics.enable(crystal, Phaser.Physics.ARCADE);
 
    orbs.create(0, -115, 'orb1')
    orbs.create(-115, 0, 'orb2')
