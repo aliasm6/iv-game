@@ -1,2 +1,22 @@
 /* add custom styles */
-canvas {   display : block;   margin : auto;}
+canvas {
+  display : block;
+  margin : auto;
+  -webkit-box-shadow: 9px 5px 26px -9px rgba(0,0,0,0.75);
+  -moz-box-shadow: 9px 5px 26px -9px rgba(0,0,0,0.75);
+  box-shadow: 9px 5px 26px -9px rgba(0,0,0,0.75);
+}
+.game-page {
+  height: 100vh;
+  background: #7100bc; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #7100bc 0%, #1f009e 51%, #000e22 94%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #7100bc 0%,#1f009e 51%,#000e22 94%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #7100bc 0%,#1f009e 51%,#000e22 94%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7100bc', endColorstr='#000e22',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.game-title {
+  font-family: 'Exo 2', sans-serif;
+  color: white;
+  text-shadow: 5px 5px 13px rgba(0,0,0,0.75);
+}
